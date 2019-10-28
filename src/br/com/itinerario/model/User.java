@@ -6,8 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User {
+	private int id;
 	private String email;
 	private String senha;
+	private final int MD5_LENGTH = 32;
+	private final int MIN_PASSWORD_LENGTH = 8;
 	
 	public User(String email, String senha) throws Exception {
 		this.setEmail(email);
@@ -37,16 +40,28 @@ public class User {
 	}	
 	
 	public void setSenha(String senha) throws Exception {
-		if(senha.length() < 8) {
+		if(senha.length() < MIN_PASSWORD_LENGTH) {
 			throw new RuntimeException("A senha deve ter no minímo 8 caracteres!");
-		}				
-		this.senha = encryptPassword(senha);
+		}
+		if(senha.length() == MD5_LENGTH) {
+			this.senha = senha;
+		}else {
+			this.senha = encryptPassword(senha);
+		}		
 	}
 	
 	private String encryptPassword(String senha) throws Exception{
 		MessageDigest m = MessageDigest.getInstance("MD5");
 		m.update(senha.getBytes(), 0, senha.length());
 		return new BigInteger(1, m.digest()).toString(16);
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 	
 	public String getEmail() {

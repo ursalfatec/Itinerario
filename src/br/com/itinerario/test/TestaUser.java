@@ -1,4 +1,4 @@
-package br.com.itinerario.view;
+package br.com.itinerario.test;
 
 import br.com.itinerario.model.User;
 

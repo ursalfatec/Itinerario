@@ -1,4 +1,4 @@
-package br.com.itinerario.view;
+package br.com.itinerario.test;
 
 import java.io.BufferedReader;
 import java.io.IOException;

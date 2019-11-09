@@ -1,4 +1,4 @@
-package br.com.itinerario.view;
+package br.com.itinerario.test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class TestPost {
 		    //                .build();
 		
 		CloseableHttpClient client = HttpClients.createDefault();
-		// Autenticação
+		// Autenticaï¿½ï¿½o
 		HttpPost post = new HttpPost(api);
 		//Buscando uma linha
 		HttpGet get = new HttpGet(busca);

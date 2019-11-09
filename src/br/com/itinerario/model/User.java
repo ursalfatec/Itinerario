@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class User {
+public class User extends Posicao {
 	private int id;
 	private String email;
 	private String senha;
@@ -33,7 +33,7 @@ public class User {
 			if(matcher.matches()) {
 				isEmailValid = true;
 			}else {
-				throw new RuntimeException("E-mail inválido!");
+				throw new RuntimeException("E-mail invï¿½lido!");
 			}
 		}
 		return isEmailValid;
@@ -41,7 +41,7 @@ public class User {
 	
 	public void setSenha(String senha) throws Exception {
 		if(senha.length() < MIN_PASSWORD_LENGTH) {
-			throw new RuntimeException("A senha deve ter no minímo 8 caracteres!");
+			throw new RuntimeException("A senha deve ter no minï¿½mo 8 caracteres!");
 		}
 		if(senha.length() == MD5_LENGTH) {
 			this.senha = senha;

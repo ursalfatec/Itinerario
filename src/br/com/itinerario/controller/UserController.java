@@ -3,19 +3,23 @@ package br.com.itinerario.controller;
 import java.util.List;
 
 import br.com.itinerario.model.User;
+import br.com.itinerario.persists.UserDAO;
 
 public class UserController {
 	
-	public void novoUsuario(String email, String senha) {
-		//Registrar um novo usuario no Sistema
+	public void salvar(String email, String senha) throws Exception {
+		User u = new User(email, senha);
+		UserDAO dao = new UserDAO();
+		dao.create(u);
 	}
 	
-	public void loginUsuario(String email, String senha) {
-		//Autenticar um usuário que deseja entrar no sistema
+	public User loginUsuario(String email, String senha) throws Exception {
+		User u = new User(email, senha);
+		UserDAO dao = new UserDAO();
+		return dao.login(u);
 	}
 	
-	public List<User> listarUsuarios() {
-		// Listar todos os usuários cadastrados no sistema/
-		return null;
+	public List<User> listarUsuarios() throws Exception {
+		return new UserDAO().listar();
 	}
 }

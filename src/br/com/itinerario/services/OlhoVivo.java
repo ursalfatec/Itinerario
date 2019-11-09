@@ -13,8 +13,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 /**
- * Consumir o WebService Olho vivo da sptrans, buncando informações sobre os ônibus e paradas
- * da cidade de São Paulo
+ * Consumir o WebService Olho vivo da sptrans, buncando informaï¿½ï¿½es sobre os ï¿½nibus e paradas
+ * da cidade de Sï¿½o Paulo
  * @author FELIPE DE OLIVEIRA
  *
  */
@@ -30,16 +30,16 @@ public class OlhoVivo {
 	
 	/**
 	 * Construtor da classe OlhoVivo.
-	 * Só deve ser chamado pelo método getInstance(), mantendo o padrão de projeto Singleton.
-	 * Ao ser chamado, inicia um novo client http e logo em seguida solicita autenticação na API Olho Vivo
+	 * Sï¿½ deve ser chamado pelo mï¿½todo getInstance(), mantendo o padrï¿½o de projeto Singleton.
+	 * Ao ser chamado, inicia um novo client http e logo em seguida solicita autenticaï¿½ï¿½o na API Olho Vivo
 	 */
 	private OlhoVivo() {
 		client = HttpClients.createDefault();
 		authenticate();
 	}
 	/**
-	 * Retorna a referência a única instância da classe OlhoVivo
-	 * @return Instância da classe OlhoVivo permitindo utilizar os métodos da API Olho Vivo
+	 * Retorna a referï¿½ncia a ï¿½nica instï¿½ncia da classe OlhoVivo
+	 * @return Instï¿½ncia da classe OlhoVivo permitindo utilizar os mï¿½todos da API Olho Vivo
 	 */
 	public static OlhoVivo getInstance() {
 		if(uniqueInstance == null) {
@@ -62,7 +62,7 @@ public class OlhoVivo {
 		return client.execute(http).getEntity().getContent();		
 	}
 	/**
-	 * Faz uma chamada para uma url com o método http post.
+	 * Faz uma chamada para uma url com o mï¿½todo http post.
 	 * @param url
 	 * @return Uma Stream com o resultado da chamada
 	 * @throws Exception
@@ -71,7 +71,7 @@ public class OlhoVivo {
 		return execute(new HttpPost(url));		
 	}
 	/**
-	 * Faz uma chamada para uma url com o método http get
+	 * Faz uma chamada para uma url com o mï¿½todo http get
 	 * @param url
 	 * @return Uma Stream com o resultado da chamada
 	 * @throws Exception
@@ -80,23 +80,23 @@ public class OlhoVivo {
 		return execute(new HttpGet(url));		
 	}	
 	/**
-	 * Faz a autenticação do cliente na API Olho vivo
+	 * Faz a autenticaï¿½ï¿½o do cliente na API Olho vivo
 	 */
 	private void authenticate() {
 		String auth = API+"/Login/Autenticar?token="+TOKEN;		
 		try {
 			doPost(auth);			
 		} catch (Exception e) {
-			throw new RuntimeException("ERRO NA AUTENTICAÇÃO DA API! erro:"+e.getMessage());
+			throw new RuntimeException("ERRO NA AUTENTICAï¿½ï¿½O DA API! erro:"+e.getMessage());
 		}
 	}
 	/**
 	 * Converte um InputStream em String	
 	 * @param reader
-	 * @return Uma String com o conteúdo do InputStream 
+	 * @return Uma String com o conteï¿½do do InputStream 
 	 * @throws IOException
 	 */
-	private String responseToString(InputStream reader) throws IOException {		
+	private String responseToString(InputStream reader) throws Exception {		
 		StringBuilder rs = new StringBuilder();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(reader));
 		String line = "";
@@ -105,26 +105,37 @@ public class OlhoVivo {
 		}
 		return rs.toString();
 	}
+	///// INTERFACE DA API OLHO VIVO /////////////////////////////////////////////////////
 	/**
-	 * Busca uma linha de ônibus a partir do número da linha ou uma parte do nome
+	 * Busca uma linha de ï¿½nibus a partir do nï¿½mero da linha ou uma parte do nome
 	 * @param termoBusca
-	 * @return Uma String na notação JSON com um array com todas as linha encontradas
+	 * @return Uma String na notaï¿½ï¿½o JSON com um array com todas as linha encontradas
 	 * @throws Exception
 	 * @throws IOException
 	 */
-	public String buscarLinha(String termoBusca) throws Exception, IOException {		
+	public String buscarLinha(String termoBusca) throws Exception {		
 		String search = API+"/Linha/Buscar?termosBusca="+termoBusca;
 		return responseToString(doGet(search));		
 	}
 	/**
-	 * Busca por uma parada de ônibus a partir de uma parte do endereço	
+	 * Busca por uma parada de ï¿½nibus a partir de uma parte do endereï¿½o	
 	 * @param termoBusca
-	 * @return Uma String na notação JSON com um array com todas as paradas encontradas
+	 * @return Uma String na notaï¿½ï¿½o JSON com um array com todas as paradas encontradas
 	 * @throws Exception
 	 * @throws IOException
 	 */
-	public String buscarParada(String termoBusca) throws Exception, IOException {
+	public String buscarParada(String termoBusca) throws Exception {
 		String search = API+"/Parada/Buscar?termosBusca="+termoBusca;
 		return responseToString(doGet(search));	
-	}		
+	}
+	/**
+	 * Retorna uma lista com todos os veÃ­culos de uma determinada linha com suas devidas posiÃ§Ãµes
+	 * @param codigoLinha
+	 * @return Um objeto JSON com um atributo vs, que contÃ©m lat e lng de todos os veiculos da linha
+	 * @throws Exception
+	 */
+	public String posicaoDaLinha(int codigoLinha) throws Exception {
+		String search = API+"/Posicao/Linha?codigoLinha="+codigoLinha;
+		return responseToString(doGet(search));	
+	}
 }
